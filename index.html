@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaTube - Современный видеохостинг</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>▶️</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-play-circle"></i>
+                    <span>MaTube</span>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Поиск видео...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="upload-btn">
+                        <i class="fas fa-upload"></i>
+                        <span>Загрузить</span>
+                    </button>
+                    <div class="user-avatar">
+                        <span>U</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-home"></i> Навигация</h3>
+                    <ul>
+                        <li class="active"><i class="fas fa-house"></i> Главная</li>
+                        <li><i class="fas fa-fire"></i> Тренды</li>
+                        <li><i class="fas fa-history"></i> История</li>
+                        <li><i class="fas fa-heart"></i> Понравившиеся</li>
+                        <li><i class="fas fa-save"></i> Сохраненные</li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-compass"></i> Исследовать</h3>
+                    <ul>
+                        <li><i class="fas fa-music"></i> Музыка</li>
+                        <li><i class="fas fa-gamepad"></i> Игры</li>
+                        <li><i class="fas fa-newspaper"></i> Новости</li>
+                        <li><i class="fas fa-lightbulb"></i> Образование</li>
+                        <li><i class="fas fa-flask"></i> Наука</li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-cog"></i> Настройки</h3>
+                    <ul>
+                        <li><i class="fas fa-user"></i> Аккаунт</li>
+                        <li><i class="fas fa-moon"></i> Тема</li>
+                        <li><i class="fas fa-bell"></i> Уведомления</li>
+                        <li><i class="fas fa-shield-alt"></i> Конфиденциальность</li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Video Content -->
+        <section class="content">
+            <h1 class="page-title">Рекомендуемые видео</h1>
+            
+            <div class="video-grid" id="videoGrid">
+                <!-- Видео будут загружены через JavaScript -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Загрузка видео...
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">MaTube</div>
+                    <p>Современный видеохостинг с неоновым дизайном.<br>Смотрите, загружайте, делитесь.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h4>MaTube</h4>
+                        <ul>
+                            <li>О нас</li>
+                            <li>Пресс-центр</li>
+                            <li>Вакансии</li>
+                            <li>Контакты</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h4>Помощь</h4>
+                        <ul>
+                            <li>Центр поддержки</li>
+                            <li>Сообщество</li>
+                            <li>Правила</li>
+                            <li>Безопасность</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h4>Разработчикам</h4>
+                        <ul>
+                            <li>API</li>
+                            <li>Документация</li>
+                            <li>Библиотеки</li>
+                            <li>Форум</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 MaTube. Все права защищены. 
+                <div style="margin-top: 10px; font-size: 0.9rem;">
+                    <a href="#" style="color: var(--secondary-color); margin: 0 10px;">Конфиденциальность</a> | 
+                    <a href="#" style="color: var(--secondary-color); margin: 0 10px;">Условия использования</a> | 
+                    <a href="#" style="color: var(--secondary-color); margin: 0 10px;">Политика cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Загрузка видео через API
+        async function loadVideos() {
+            try {
+                const response = await fetch('/api/videos');
+                const videos = await response.json();
+                displayVideos(videos);
+            } catch (error) {
+                console.error('Ошибка загрузки видео:', error);
+                // Используем тестовые данные, если API недоступно
+                const fallbackVideos = [
+                    { id: 1, title: "Новые технологии 2024", views: "1.2M", duration: "10:25", channel: "TechFuture" },
+                    { id: 2, title: "Искусственный интеллект в жизни", views: "890K", duration: "15:42", channel: "AI Insights" },
+                    { id: 3, title: "Космос: новые открытия", views: "2.3M", duration: "22:18", channel: "Space Explorer" },
+                    { id: 4, title: "Программирование будущего", views: "540K", duration: "18:05", channel: "CodeMaster" },
+                    { id: 5, title: "Градиенты в дизайне", views: "320K", duration: "12:37", channel: "Design Pro" },
+                    { id: 6, title: "Neon эффекты в CSS", views: "410K", duration: "14:20", channel: "Web Artist" },
+                    { id: 7, title: "Создание видеоплатформы", views: "280K", duration: "25:10", channel: "Dev Guide" },
+                    { id: 8, title: "Адаптивный дизайн", views: "510K", duration: "16:45", channel: "UI Expert" }
+                ];
+                displayVideos(fallbackVideos);
+            }
+        }
+
+        // Отображение видео в сетке
+        function displayVideos(videos) {
+            const videoGrid = document.getElementById('videoGrid');
+            videoGrid.innerHTML = '';
+            
+            videos.forEach(video => {
+                const channelInitial = video.channel ? video.channel.charAt(0) : 'C';
+                const thumbnailUrl = `https://picsum.photos/seed/vid${video.id}/320/180`;
+                
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="thumbnail">
+                        <img src="${thumbnailUrl}" alt="${video.title}">
+                        <div class="duration">${video.duration}</div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <div class="video-meta">
+                            <span>${video.views} просмотров</span>
+                            <span><i class="far fa-thumbs-up"></i> 15K</span>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-avatar">${channelInitial}</div>
+                            <div>${video.channel || 'Канал'}</div>
+                        </div>
+                    </div>
+                `;
+                
+                videoGrid.appendChild(videoCard);
+            });
+        }
+
+        // Поиск видео
+        document.querySelector('.search-bar input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value;
+                if (searchTerm.trim()) {
+                    alert(`Поиск: ${searchTerm}`);
+                    // В реальном приложении здесь будет запрос к API поиска
+                }
+            }
+        });
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', loadVideos);
+        
+        // Обработчики для элементов навигации
+        document.querySelectorAll('.sidebar-nav li').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-nav li').forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.textContent.trim();
+                document.querySelector('.page-title').textContent = category;
+            });
+        });
+        
+        // Обработчик кнопки загрузки
+        document.querySelector('.upload-btn').addEventListener('click', function() {
+            alert('Функция загрузки видео будет доступна в полной версии MaTube!');
+        });
+    </script>
+</body>
+</html>
